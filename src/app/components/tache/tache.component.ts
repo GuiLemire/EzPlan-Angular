@@ -33,6 +33,7 @@ export class TacheComponent implements OnInit
     if (this.valide)
     {
       this.ajouterNouvelleTache.emit(this.tache);
+      this.tache = { nom: "Ma tache", dureeApproximative: 15, dureeMaxConsecutive: 15, niveauDeStress: 0 };
     }
     else
     {

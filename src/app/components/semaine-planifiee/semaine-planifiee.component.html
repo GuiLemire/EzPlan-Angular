@@ -1,12 +1,12 @@
 <label for="semainePlanifiee.horaireDisponibilites">Choisir un horaire de disponibilité:</label>
 <select [(ngModel)]="semainePlanifiee.horaireDisponibilites" name="semainePlanifiee.horaireDisponibilites">
-    <option *ngFor="let horaireDisponibilites of horairesDisponibilites" value="{{horaireDisponibilites}}">
+    <option *ngFor="let horaireDisponibilites of horairesDisponibilites" [ngValue]="horaireDisponibilites">
         {{horaireDisponibilites.nom}}</option>
 </select><br />
 
 <label for="dateSemaine">Choisir une date dans la semaine à planifier</label>
 <input type="date" [(ngModel)]="dateSemaine" name="dateSemaine" (change)="syncDates()" onkeydown="return false"
-    required /><br /><br />
+    required [ngClass]="{'redBorder': !isDateValide}"/><br /><br />
 
 <p>Tâches à ajouter</p>
 <ul>
@@ -21,7 +21,7 @@
         <li>
             <span>{{tachePlanifier.tache!.nom}}--</span><label for="{{tachePlanifier.tache!.tacheID}}">Date d'échéance:
             </label>
-            <input [ngClass]="{'redBorder': !valide && !tachePlanifier.dateEcheance}" type="date"
+            <input [ngClass]="{'redBorder': !isInputValide && !tachePlanifier.dateEcheance}" type="date"
                 id="{{tachePlanifier.tache!.tacheID}}" min="{{dateMin}}" max="{{dateMax}}"
                 [(ngModel)]="tachePlanifier.dateEcheance" required />
         </li>

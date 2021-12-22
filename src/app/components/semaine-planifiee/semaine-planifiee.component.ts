@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { dashCaseToCamelCase } from '@angular/compiler/src/util';
+import { Component, Input, OnInit } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { HoraireDisponibilites } from 'src/app/models/horaireDisponibilites';
 import { SemainePlanifiee } from 'src/app/models/semainePlanifiee';
@@ -16,22 +17,35 @@ import * as CONST from '../../constantes';
 })
 export class SemainePlanifieeComponent implements OnInit
 {
+  @Input() semainesPlanifiees?: SemainePlanifiee[];
   semainePlanifiee: SemainePlanifiee = new SemainePlanifiee();
   tachesPourAjouter: Tache[] = [];
   tachesPourPlanifier: TachePlanifiee[] = [];
-  horairesDisponibilites : HoraireDisponibilites[] = [];
+  horairesDisponibilites: HoraireDisponibilites[] = [];
   dateSemaine: string = new Date(Date.now()).toISOString().substring(0, 10);
   dateMin?: string;
   dateMax?: string;
   nomTachePourAjouter: string = "Choisir";
-  valide: boolean = true;
-  constructor(private tachesService: TachesService, private horairesDisponibilitesService : HorairesDisponibilitesService, private semainesPlanifieesService : SemainesPlanifieesService) { }
+  isInputValide: boolean = true;
+  isDateValide: boolean = true;
+  constructor(private tachesService: TachesService, private horairesDisponibilitesService: HorairesDisponibilitesService, private semainesPlanifieesService: SemainesPlanifieesService) { }
 
   ngOnInit(): void
   {
-    this.initialiserDates();
+    this.initialiserDateSemaine();
+    this.initialiserDatesMinMax();
     this.initialiserTachesPourAjouter();
     this.initialiserHorairesDisponibilites();
+  }
+  initialiserDateSemaine()
+  {
+    var ajourdhuis = new Date();
+    this.semainePlanifiee.dateDebut = this.getDateDernierDimanche(ajourdhuis.toISOString().substring(0, 10));
+    if(this.isDateDejaUtilisee(this.semainePlanifiee.dateDebut)){
+      this.dateSemaine = this.prochaineDateValide();
+      this.semainePlanifiee.dateDebut =  new Date(this.dateSemaine);
+
+    }
   }
   async initialiserHorairesDisponibilites()
   {
@@ -39,16 +53,17 @@ export class SemainePlanifieeComponent implements OnInit
     this.horairesDisponibilites = await lastValueFrom(horaires$);
     this.semainePlanifiee.horaireDisponibilites = this.horairesDisponibilites[0];
   }
-  initialiserDates()
+  initialiserDatesMinMax()
   {
-    this.dateMin = this.semainePlanifiee.dateDebut.toISOString().substring(0, 10);
-    var date = new Date(this.semainePlanifiee.dateDebut);
+    this.dateMin = this.semainePlanifiee.dateDebut!.toISOString().substring(0, 10);
+    var date = new Date(this.semainePlanifiee.dateDebut!);
     date.setDate(date.getDate() + 6);
-    this.dateMax = date.toISOString().substring(0, 10); 
-    if(new Date(this.dateMax).getDate() - new Date(this.dateMin).getDate() == 7){
+    this.dateMax = date.toISOString().substring(0, 10);
+    if (new Date(this.dateMax).getDate() - new Date(this.dateMin).getDate() == 7)
+    {
       date = new Date(this.dateMin);
       date.setDate(date.getDate() + 1);
-      this.dateMin = date.toISOString().substring(0,10);
+      this.dateMin = date.toISOString().substring(0, 10);
     }
   }
   async initialiserTachesPourAjouter()
@@ -68,11 +83,38 @@ export class SemainePlanifieeComponent implements OnInit
   }
   syncDates()
   {
-    this.semainePlanifiee.dateDebut = this.getDateDernierDimanche(this.dateSemaine);
-    this.initialiserDates();
-    this.initialiserTachesPourAjouter();
-    this.tachesPourPlanifier = [];
-    this.valide = true;
+    var dateDernierDimanche = this.getDateDernierDimanche(this.dateSemaine);
+    if (this.isDateDejaUtilisee(dateDernierDimanche))
+    {
+      alert("Cette semaine est déjà planifiée.")
+      this.dateSemaine = this.prochaineDateValide();
+    } 
+    else
+    {
+      this.semainePlanifiee.dateDebut = dateDernierDimanche;
+      this.initialiserDatesMinMax();
+      this.initialiserTachesPourAjouter();
+      this.tachesPourPlanifier = [];
+      this.isInputValide = true;
+    }
+  }
+  prochaineDateValide(): string
+  {
+    var nouvelleDate = new Date(this.dateSemaine);
+    nouvelleDate = this.getDateDernierDimanche(nouvelleDate.toISOString().substring(0,10))
+    while (this.isDateDejaUtilisee(nouvelleDate)){
+      nouvelleDate.setDate(nouvelleDate.getDate() + 7)
+    }
+    return nouvelleDate.toISOString().substring(0,10);
+  }
+  isDateDejaUtilisee(date : Date) : boolean
+  {
+    for (var semainePlanifiee of this.semainesPlanifiees!){
+     if(semainePlanifiee.dateDebut.toString().substring(0,10) == date.toISOString().substring(0,10)){
+       return true;
+     }
+    }
+    return false;
   }
   getDateDernierDimanche(dateSemaine: string): Date
   {
@@ -85,11 +127,11 @@ export class SemainePlanifieeComponent implements OnInit
   }
   planifierSemaine()
   {
-    this.valide = this.validerTachesPourPlanifiees();
-    if (this.valide)
+    this.isInputValide = this.validerTachesPourPlanifiees();
+    if (this.isInputValide)
     {
       this.semainePlanifiee.tachesPlanifiees = this.tachesPourPlanifier;
-      this.semainesPlanifieesService.planifierSemaine(this.semainePlanifiee,CONST.utilisateurID);
+      this.semainesPlanifieesService.planifierSemaine(this.semainePlanifiee, CONST.utilisateurID);
     }
   }
   validerTachesPourPlanifiees(): boolean
@@ -101,5 +143,4 @@ export class SemainePlanifieeComponent implements OnInit
     }
     return true;
   }
-
 }

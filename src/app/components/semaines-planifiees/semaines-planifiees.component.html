@@ -1,4 +1,4 @@
-<app-semaine-planifiee *ngIf="state == 'nouvelleSemaine'"></app-semaine-planifiee>
+<app-semaine-planifiee [semainesPlanifiees]="semainesPlanifiees" *ngIf="state == 'nouvelleSemaine'"></app-semaine-planifiee>
 
 <div *ngIf="state == 'listeSemaines'">
     <p>Liste de semaines planifiées</p>
