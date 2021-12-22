@@ -1,0 +1,13 @@
+<label for="tache.nom">Nom de la tâche: </label>
+<input [(ngModel)] = "tache.nom" name="tache.nom" /> <br />
+
+<label for="tache.dureeApproximative">Durée totale approximative: </label>
+<input type="number" min="15" max="480" step="15" onkeydown="return false" [(ngModel)] = "tache.dureeApproximative" name="tache.dureeApproximative" (change)="validerDureeConsecutiveMax()"/> minutes. <br />
+
+<label for="tache.dureeMaxConsecutive">Durée consécutive maximum: </label>
+<input type="number" min="15" max="{{tache.dureeApproximative}}" step="15" onkeydown="return false" [(ngModel)] = "tache.dureeMaxConsecutive" name="tache.dureeMaxConsecutive" [ngClass]="{'redBorder' : !valide }" (change)="validerDureeConsecutiveMax()"/> minutes. <br />
+
+<label for="tache.niveauDeStress">Niveau de stress: </label>
+<input type="number" min="0" max="3" step="1" onkeydown="return false" [(ngModel)] = "tache.niveauDeStress" name="tache.niveauDeStress" />. <br />
+
+<button (click)="ajouterTache()">Ajouter tâche</button><br /><br />

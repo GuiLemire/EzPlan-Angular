@@ -1,0 +1,21 @@
+<header>
+  {{title}}
+</header>
+
+<br>
+<div>  
+  <app-taches *ngIf="title == 'taches'"></app-taches>
+  <app-horaires-disponibilites *ngIf="title == 'disponibilites'"></app-horaires-disponibilites>
+  <app-semaines-planifiees *ngIf="title == 'planning'"></app-semaines-planifiees>
+</div>
+<br>
+
+<footer>
+  <nav>
+    <button (click)="changerPage('taches')">Tâche</button>
+    <button (click)="changerPage('planning')">Planning</button>
+    <button (click)="changerPage('disponibilites')">Disponibilités</button>
+  </nav>
+</footer>
+
+<router-outlet></router-outlet>

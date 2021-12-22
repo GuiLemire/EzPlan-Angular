@@ -1,0 +1,23 @@
+<div *ngIf="state == 'listeJournees'">
+    <p>Semaine du {{semainePlanifiee?.dateDebut | date : 'mediumDate' : '+0000': 'fr'}}</p>
+    <div *ngFor="let journeePlanifiee of semainePlanifiee?.journeesPlanifiees">
+        <ul>
+            <li [ngClass]="{'hover' : journeePlanifiee!.partiesDeTachesPlanifiees!.length > 0}"
+                (click)="journeePlanifiee!.partiesDeTachesPlanifiees!.length > 0 && afficherJourneePlanifiee(journeePlanifiee!.journeePlanifieeID)">
+                {{journeePlanifiee.date | date:'cccc':'+0000':'fr' | titlecase}}</li>
+            <ul>
+                <li *ngFor="let partiesDeTachesPlanifiees of journeePlanifiee.partiesDeTachesPlanifiees">
+                    {{partiesDeTachesPlanifiees.tachePlanifiee!.tache!.nom}}
+                </li>
+            </ul>
+        </ul>
+    </div>
+    <p>Tâches planifiées</p>
+    <div>
+        <ul>
+            <li *ngFor="let tachePlanifiee of semainePlanifiee?.tachesPlanifiees">{{tachePlanifiee.tache!.nom}} -- Date
+                d'échéance: {{tachePlanifiee.dateEcheance | date : 'mediumDate' : '+0000': 'fr'}}</li>
+        </ul>
+    </div>
+</div>
+<app-journee-planifiee [journeePlanifiee]='journeePlanifiee!' *ngIf="state == 'journee'"></app-journee-planifiee>

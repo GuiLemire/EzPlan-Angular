@@ -1,0 +1,6 @@
+<app-tache (ajouterNouvelleTache)="ajouterNouvelleTache($event)" *ngIf="state !== 'liste'"></app-tache>
+<p>Liste de tâches</p>
+<ul>
+    <li *ngFor="let tache of taches"> {{tache.nom}} </li>
+</ul>
+<button *ngIf="state !== 'nouvelleTache'" (click)="creerTache()">CreerTache</button>

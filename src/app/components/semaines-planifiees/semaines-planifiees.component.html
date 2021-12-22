@@ -1,0 +1,13 @@
+<app-semaine-planifiee *ngIf="state == 'nouvelleSemaine'"></app-semaine-planifiee>
+
+<div *ngIf="state == 'listeSemaines'">
+    <p>Liste de semaines planifiées</p>
+    <ul>
+            <li class="hover" (click)="afficherJourneesPlanifiees(semainePlanifiee.semainePlanifieeID!)" *ngFor="let semainePlanifiee of semainesPlanifiees">{{semainePlanifiee.dateDebut | date : 'mediumDate' : '+0000': 'fr'}}</li>
+
+    </ul>
+</div>
+
+<app-journees-planifiees [semainePlanifieeID]='semainePlanifieeID' *ngIf="state == 'journees'"></app-journees-planifiees>
+
+<button *ngIf="state == 'listeSemaines'" (click)="planifierSemaine()">Planifier une nouvelle semaine</button>

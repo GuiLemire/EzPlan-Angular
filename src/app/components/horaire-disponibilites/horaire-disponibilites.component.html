@@ -1,0 +1,18 @@
+<label for="nom">Nom de l'horaire:</label><input [(ngModel)]="nom" name='nom' [ngClass]="{'redBorder': !isNomValide}" /><br/><br />
+
+<app-disponibilite *ngIf='state == "nouvelleDisponibilite"'
+    (ajouterNouvelleDisponibilite)="ajouterNouvelleDisponibilite($event)">
+</app-disponibilite>
+
+<p>Liste de disponibilités</p>
+<div *ngFor='let disponibilite of disponibilites'>
+    <ul>
+        <li><span>Journée: {{NOM_JOURNEES[disponibilite.journee!]}}--</span><span>Heure de début:{{HEURES[disponibilite.heureDebut! *
+        4]}}--</span><span>Heure de fin:{{HEURES[disponibilite.heureFin! * 4]}}--</span><span>Durée
+        disponible:{{duree(disponibilite)}} heures</span></li>
+    </ul>
+</div>
+<p>Total:{{disponibilites.length}}</p>
+
+<button (click)="ajouterDisponibilite()">Ajouter Disponibilite</button>
+<button *ngIf="disponibilites.length > 0" (click)="ajouterHoraire()">Accepter nouvel horaire</button>

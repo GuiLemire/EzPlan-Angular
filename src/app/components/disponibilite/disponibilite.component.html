@@ -1,0 +1,24 @@
+<div>
+    <form>
+        <label for="disponibilite.journee">Journée:</label>
+        <select [(ngModel)]="disponibilite.journee" name="disponibilite.journee">
+            <option value="0">Dimanche</option>
+            <option value="1">Lundi</option>
+            <option value="2">Mardi</option>
+            <option value="3">Mercredi</option>
+            <option value="4">Jeudi</option>
+            <option value="5">Vendredi</option>
+            <option value="6">Samedi</option>
+        </select>
+        <label for="disponibilite.heureDebut">Heure de début:</label>
+        <select [(ngModel)]="disponibilite.heureDebut" name="disponibilite.heureDebut" (change)="validerHeures()">
+            <option *ngFor="let heure of heuresDebut" value="{{heure.value}}">{{heure.name}}</option>
+        </select>
+        <label for="disponibilite.heureFin">Heure de Fin:</label>
+        <select [(ngModel)]="disponibilite.heureFin" name="disponibilite.heureFin" (change)="validerHeures()"
+            [ngClass]="{redBorder : !valide}">
+            <option *ngFor="let heure of heuresFin" value="{{heure.value}}">{{heure.name}}</option>
+        </select>
+        <button (click)="ajouterDisponibilite()">Accepter</button>
+    </form>
+</div><br />
