@@ -6,12 +6,11 @@
 <div>
     <app-taches *ngIf="title == 'Taches'"></app-taches>
     <app-horaires-disponibilites *ngIf="title == 'Disponibilites'"></app-horaires-disponibilites>
-    <app-semaines-planifiees *ngIf="title == 'Planning'"></app-semaines-planifiees>
+    <app-semaines-planifiees *ngIf="title == 'Mon planning'"></app-semaines-planifiees>
 </div>
 
 <footer id="footer" class="fixed-bottom hstack gap-3" *ngIf="title == 'Mon planning'">
     <button type="button" class="btn btn-primary m-auto" (click)="changerPage('Taches')">Tâche</button>
-    <button type="button" class="btn btn-primary m-auto" (click)="changerPage('Planning')">Planning</button>
     <button type="button" class="btn btn-primary m-auto" (click)="changerPage('Disponibilites')">Disponibilités</button>
 </footer>
 
