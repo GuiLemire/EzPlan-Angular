@@ -132,6 +132,7 @@ export class SemainePlanifieeComponent implements OnInit
     {
       this.semainePlanifiee.tachesPlanifiees = this.tachesPourPlanifier;
       this.semainesPlanifieesService.planifierSemaine(this.semainePlanifiee, CONST.utilisateurID);
+
     }
   }
   validerTachesPourPlanifiees(): boolean

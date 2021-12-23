@@ -18,7 +18,9 @@ export class SemainesPlanifieesService {
 
   planifierSemaine(semainePlanifiee: SemainePlanifiee,utilisateurID : number)
   {
-    return this.http.post<SemainePlanifiee>(CONST.URL + "planifierSemaine/" + utilisateurID.toString(),semainePlanifiee).subscribe();
+    return this.http.post<string>(CONST.URL + "planifierSemaine/" + utilisateurID.toString(),semainePlanifiee).subscribe(data => {
+      alert(data);
+    });
   }
 
   getSemainePlanifieeByID(semainePlanifieeID: number)
