@@ -1,10 +1,37 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-.redBorder {
-    border: 2px solid red;
+@import "~bootstrap/dist/css/bootstrap.css";
+
+html, body {
+    width: 100vw;
+    height: 100vh;
 }
-.hover:hover{
-    background-color: aqua;
+
+body {
+    padding: 0;
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+h1 {
+    margin: 0;
+}
+
+#header {
+    height: 8%;
+    border-bottom: solid black 2px;
+}
+
+#footer {
+    display: flex;
+    height: 8%;
+    border-top: solid black 2px;
+}
+
+#backBtn {
+    margin-left: 1.5%;
+}
+
+.center {
+    text-align: center;
 }

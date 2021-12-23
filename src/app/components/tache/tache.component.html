@@ -1,13 +1,23 @@
-<label for="tache.nom">Nom de la tâche: </label>
-<input [(ngModel)] = "tache.nom" name="tache.nom" /> <br />
+<div class="form-tache">
+    <span id="inputGroup-nom">Nom</span>
+    <input type="text" class="form-control" aria-label="Nom de la tâche" aria-describedby="inputGroup-nom" [(ngModel)]="tache.nom" name="tache.nom" />
 
-<label for="tache.dureeApproximative">Durée totale approximative: </label>
-<input type="number" min="15" max="480" step="15" onkeydown="return false" [(ngModel)] = "tache.dureeApproximative" name="tache.dureeApproximative" (change)="validerDureeConsecutiveMax()"/> minutes. <br />
+    <div id="dureeApprox" class="form-control">
+        <label for="tache.dureeApproximative">Durée totale approximative</label>
+        <input type="number" min="15" max="480" step="15" onkeydown="return false" [(ngModel)]="tache.dureeApproximative" name="tache.dureeApproximative" (change)="validerDureeConsecutiveMax()" />
+    </div>
 
-<label for="tache.dureeMaxConsecutive">Durée consécutive maximum: </label>
-<input type="number" min="15" max="{{tache.dureeApproximative}}" step="15" onkeydown="return false" [(ngModel)] = "tache.dureeMaxConsecutive" name="tache.dureeMaxConsecutive" [ngClass]="{'redBorder' : !valide }" (change)="validerDureeConsecutiveMax()"/> minutes. <br />
+    <div id="" class="form-control">
+        <label for="tache.dureeMaxConsecutive">Durée consécutive maximum: </label>
+        <input type="number" min="15" max="{{tache.dureeApproximative}}" step="15" onkeydown="return false" [(ngModel)]="tache.dureeMaxConsecutive" name="tache.dureeMaxConsecutive" [ngClass]="{'redBorder' : !valide }" (change)="validerDureeConsecutiveMax()" />
+    </div>
 
-<label for="tache.niveauDeStress">Niveau de stress: </label>
-<input type="number" min="0" max="3" step="1" onkeydown="return false" [(ngModel)] = "tache.niveauDeStress" name="tache.niveauDeStress" />. <br />
+    <div id="" class="form-control">
+        <label for="tache.niveauDeStress">Niveau de stress: </label>
+        <input type="number" min="0" max="3" step="1" onkeydown="return false" [(ngModel)]="tache.niveauDeStress" name="tache.niveauDeStress" />.
+    </div>
 
-<button (click)="ajouterTache()">Ajouter tâche</button><br /><br />
+    <div class="d-flex justify-content-center">
+        <button class="btn btn-primary" id="btnAjouterTache" (click)="ajouterTache()">Ajouter tâche</button>
+    </div>
+</div>

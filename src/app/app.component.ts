@@ -16,7 +16,7 @@ registerLocaleData(localeFr, 'fr');
 })
 export class AppComponent
 {
-  title = 'EzPlan-Angular';
+  title = 'Mon planning';
 
   constructor(private horaireDisponibiliteService: HorairesDisponibilitesService, private tachesService: TachesService) { }
 
@@ -27,7 +27,7 @@ export class AppComponent
     const horairesDisponibilites: HoraireDisponibilites[] = await lastValueFrom(horairesDisponibilites$);
     const taches$ = this.tachesService.getTachesByUtilisateurID(CONST.utilisateurID);
     const taches: Tache[] = await lastValueFrom(taches$);
-    if (page === 'planning')
+    if (page === 'Planning')
     {
       if (taches.length == 0)
       {

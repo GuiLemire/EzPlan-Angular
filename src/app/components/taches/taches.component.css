@@ -1,0 +1,10 @@
+.list-tache-item {
+    margin-top: 2%;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+/* Pour qu'il n'y ait pas d'overflow */
+.list-group {
+    width: 96%;
+}
