@@ -8,10 +8,18 @@ import * as CONST from '../constantes';
   providedIn: 'root'
 })
 export class TachesService {
+
+
+  async updateTache(tache: Tache)
+  {
+    return this.http.patch<Tache>(CONST.URL + "updateTache" , tache).subscribe(data => {
+      alert(data);
+    });
+  }
   constructor(private http: HttpClient) { }
 
   getTacheById(tacheID : number): Observable<Tache>{
-    return this.http.get<Tache>(CONST.URL + "getTache/" + tacheID.toString());
+    return this.http.get<Tache>(CONST.URL + "getTacheById/" + tacheID.toString());
   }
 
   getTachesByUtilisateurID(utilisateurID : number): Observable<Tache[]> {

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { firstValueFrom, lastValueFrom } from 'rxjs';
+import { delay, firstValueFrom, lastValueFrom, timeout } from 'rxjs';
 import { HorairesDisponibilitesService } from 'src/app/services/horaires-disponibilites.service';
 import { HoraireDisponibilites } from 'src/app/models/horaireDisponibilites';
 import { TachesService } from 'src/app/services/taches.service';
@@ -16,6 +16,7 @@ export class TachesComponent implements OnInit {
   taches?: Tache[] = [{tacheID: 0, nom: '', dureeApproximative: 0, dureeMaxConsecutive: 0, niveauDeStress: 0}];
   horaires?: HoraireDisponibilites[];
   state: string = 'liste';
+  tacheID: number = -1;
 
   constructor(private tachesService: TachesService,private horaireDisponibilitesService : HorairesDisponibilitesService) { }
 
@@ -28,7 +29,8 @@ export class TachesComponent implements OnInit {
     this.taches = await lastValueFrom(categories$);
   }
   creerTache(){
-    this.state = 'nouvelleTache';
+    this.tacheID = -1;
+    this.state = 'tache';
   }
   ajouterNouvelleTache(tache : Tache){
     if(!this.isNomTacheDejaUtilise(tache)){
@@ -47,6 +49,19 @@ export class TachesComponent implements OnInit {
       }
     }
     return false
+  }
+
+  afficherTache(tacheID? : number){
+    this.tacheID = tacheID!;
+    this.state = 'tache'
+  }
+
+  retourListe(){
+    this.state = 'liste';
+    setTimeout(() => {
+      this.getTaches();
+    },0);
+    
   }
 
 }
