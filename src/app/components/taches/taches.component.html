@@ -8,6 +8,6 @@
         <li class="list-group-item list-group-item-action list-tache-item" *ngFor="let tache of taches" (click)="afficherTache(tache.tacheID)"> {{tache.nom}} </li>
     </ul>
     <div class="position-absolute bottom-0 end-0 mb-3 me-3" *ngIf="state !== 'nouvelleTache'">
-        <button type="button" class="btn btn-success" (click)="creerTache()">Add</button>
+        <button id="ajouterTache" type="button" class="btn btn-success" (click)="creerTache()">Add</button>
     </div>
 </div>

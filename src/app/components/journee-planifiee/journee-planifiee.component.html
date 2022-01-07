@@ -1,6 +1,6 @@
 <p>Tâches du {{journeePlanifiee.date | date : 'mediumDate' : '+0000': 'fr'}}</p>
-<ul>
-    <li *ngFor="let partieDeTachePlanifiee of journeePlanifiee.partiesDeTachesPlanifiees">
-        {{partieDeTachePlanifiee?.tachePlanifiee?.tache?.nom}}--Heure début: {{partieDeTachePlanifiee.date | date : 'shortTime' : '-0500': 'fr'}}--Durée: {{partieDeTachePlanifiee.duree! / 60}} heure(s)
+<ul class="list-group">
+    <li class="list-group-item" *ngFor="let partieDeTachePlanifiee of journeePlanifiee.partiesDeTachesPlanifiees">
+        {{partieDeTachePlanifiee?.tachePlanifiee?.tache?.nom}}--Heure début: {{partieDeTachePlanifiee.date | date : 'shortTime' : '-0500': 'fr'}}--Durée: {{partieDeTachePlanifiee.duree! / 60 | number:'1.0-2'}} heure(s)
     </li>
 </ul>

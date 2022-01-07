@@ -1,5 +1,5 @@
 import { dashCaseToCamelCase } from '@angular/compiler/src/util';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { HoraireDisponibilites } from 'src/app/models/horaireDisponibilites';
 import { SemainePlanifiee } from 'src/app/models/semainePlanifiee';
@@ -18,6 +18,7 @@ import * as CONST from '../../constantes';
 export class SemainePlanifieeComponent implements OnInit
 {
   @Input() semainesPlanifiees?: SemainePlanifiee[];
+  @Output() retourListe = new EventEmitter();
   semainePlanifiee: SemainePlanifiee = new SemainePlanifiee();
   tachesPourAjouter: Tache[] = [];
   tachesPourPlanifier: TachePlanifiee[] = [];
@@ -25,7 +26,7 @@ export class SemainePlanifieeComponent implements OnInit
   dateSemaine: string = new Date(Date.now()).toISOString().substring(0, 10);
   dateMin?: string;
   dateMax?: string;
-  nomTachePourAjouter: string = "Choisir";
+  //nomTachePourAjouter: string = "Choisir";
   isInputValide: boolean = true;
   isDateValide: boolean = true;
   constructor(private tachesService: TachesService, private horairesDisponibilitesService: HorairesDisponibilitesService, private semainesPlanifieesService: SemainesPlanifieesService) { }
@@ -41,9 +42,10 @@ export class SemainePlanifieeComponent implements OnInit
   {
     var ajourdhuis = new Date();
     this.semainePlanifiee.dateDebut = this.getDateDernierDimanche(ajourdhuis.toISOString().substring(0, 10));
-    if(this.isDateDejaUtilisee(this.semainePlanifiee.dateDebut)){
+    if (this.isDateDejaUtilisee(this.semainePlanifiee.dateDebut))
+    {
       this.dateSemaine = this.prochaineDateValide();
-      this.semainePlanifiee.dateDebut =  new Date(this.dateSemaine);
+      this.semainePlanifiee.dateDebut = new Date(this.dateSemaine);
 
     }
   }
@@ -78,7 +80,7 @@ export class SemainePlanifieeComponent implements OnInit
     {
       this.tachesPourAjouter.splice(index, 1);
       this.tachesPourPlanifier[this.tachesPourPlanifier.length] = new TachePlanifiee(tache);
-      this.nomTachePourAjouter = "Choisir";
+      //this.nomTachePourAjouter = "Choisir";
     }
   }
   syncDates()
@@ -88,7 +90,7 @@ export class SemainePlanifieeComponent implements OnInit
     {
       alert("Cette semaine est déjà planifiée.")
       this.dateSemaine = this.prochaineDateValide();
-    } 
+    }
     else
     {
       this.semainePlanifiee.dateDebut = dateDernierDimanche;
@@ -101,18 +103,21 @@ export class SemainePlanifieeComponent implements OnInit
   prochaineDateValide(): string
   {
     var nouvelleDate = new Date(this.dateSemaine);
-    nouvelleDate = this.getDateDernierDimanche(nouvelleDate.toISOString().substring(0,10))
-    while (this.isDateDejaUtilisee(nouvelleDate)){
+    nouvelleDate = this.getDateDernierDimanche(nouvelleDate.toISOString().substring(0, 10))
+    while (this.isDateDejaUtilisee(nouvelleDate))
+    {
       nouvelleDate.setDate(nouvelleDate.getDate() + 7)
     }
-    return nouvelleDate.toISOString().substring(0,10);
+    return nouvelleDate.toISOString().substring(0, 10);
   }
-  isDateDejaUtilisee(date : Date) : boolean
+  isDateDejaUtilisee(date: Date): boolean
   {
-    for (var semainePlanifiee of this.semainesPlanifiees!){
-     if(semainePlanifiee.dateDebut.toString().substring(0,10) == date.toISOString().substring(0,10)){
-       return true;
-     }
+    for (var semainePlanifiee of this.semainesPlanifiees!)
+    {
+      if (semainePlanifiee.dateDebut.toString().substring(0, 10) == date.toISOString().substring(0, 10))
+      {
+        return true;
+      }
     }
     return false;
   }
@@ -132,7 +137,7 @@ export class SemainePlanifieeComponent implements OnInit
     {
       this.semainePlanifiee.tachesPlanifiees = this.tachesPourPlanifier;
       this.semainesPlanifieesService.planifierSemaine(this.semainePlanifiee, CONST.utilisateurID);
-
+      this.retourListe.emit();
     }
   }
   validerTachesPourPlanifiees(): boolean
@@ -140,7 +145,10 @@ export class SemainePlanifieeComponent implements OnInit
     for (let tachePlanifiee of this.tachesPourPlanifier)
     {
       if (typeof tachePlanifiee.dateEcheance === 'undefined')
+      {
+        alert("La tache " + tachePlanifiee.tache!.nom + " n'a pas de date d'échéance.")
         return false;
+      }
     }
     return true;
   }

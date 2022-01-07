@@ -1,31 +1,34 @@
 <label for="semainePlanifiee.horaireDisponibilites">Choisir un horaire de disponibilité:</label>
-<select [(ngModel)]="semainePlanifiee.horaireDisponibilites" name="semainePlanifiee.horaireDisponibilites">
+<select class="form-select" id="horaire" [(ngModel)]="semainePlanifiee.horaireDisponibilites" name="semainePlanifiee.horaireDisponibilites">
     <option *ngFor="let horaireDisponibilites of horairesDisponibilites" [ngValue]="horaireDisponibilites">
         {{horaireDisponibilites.nom}}</option>
 </select><br />
 
 <label for="dateSemaine">Choisir une date dans la semaine à planifier</label>
-<input type="date" [(ngModel)]="dateSemaine" name="dateSemaine" (change)="syncDates()" onkeydown="return false"
+<input class="input-group date" id="dateSemaine" type="date" [(ngModel)]="dateSemaine" name="dateSemaine" (change)="syncDates()" 
     required [ngClass]="{'redBorder': !isDateValide}"/><br /><br />
 
 <p>Tâches à ajouter</p>
-<ul>
-    <li class="hover" *ngFor="let tache of tachesPourAjouter" (click)="ajouterTachePourPlanifier(tache)">{{tache.nom}}
-    </li>
+<ul class="list-group">
+    <li class="list-group-item list-group-item-action list-tache-item" *ngFor="let tache of tachesPourAjouter" (click)="ajouterTachePourPlanifier(tache)">{{tache.nom}}</li>
 
 </ul>
 
 <p>Tâches à planifier</p>
 <div *ngFor="let tachePlanifier of tachesPourPlanifier">
-    <ul>
-        <li>
+    <ul class="list-group">
+        <li class="list-group-item list-group-item-action list-tache-item">
             <span>{{tachePlanifier.tache!.nom}}--</span><label for="{{tachePlanifier.tache!.tacheID}}">Date d'échéance:
             </label>
-            <input [ngClass]="{'redBorder': !isInputValide && !tachePlanifier.dateEcheance}" type="date"
-                id="{{tachePlanifier.tache!.tacheID}}" min="{{dateMin}}" max="{{dateMax}}"
+            <input class="input-group date" [ngClass]="{'redBorder': !isInputValide && !tachePlanifier.dateEcheance}" type="date"
+                id="dateEcheance{{tachePlanifier.tache!.nom}}" name="{{tachePlanifier.tache!.tacheID}}" min="{{dateMin}}" max="{{dateMax}}"
                 [(ngModel)]="tachePlanifier.dateEcheance" required />
         </li>
     </ul>
 
 </div>
-<button (click)="planifierSemaine()" *ngIf="tachesPourPlanifier.length > 0">Planifier</button>
+<div class="container">
+    <div class="row">
+        <button class="btn btn-success col-10 col-sm-6 col-lg-4 m-auto" id="planifier" (click)="planifierSemaine()" *ngIf="tachesPourPlanifier.length > 0">Planifier</button>
+    </div>
+</div>

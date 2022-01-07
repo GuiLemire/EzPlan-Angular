@@ -8,6 +8,7 @@ import * as CONST from '../constantes';
   providedIn: 'root'
 })
 export class HorairesDisponibilitesService {
+
   constructor(private http: HttpClient) { }
 
   getHoraireDisponibiliteById(horaireDisponibilitesID : number) : Observable<HoraireDisponibilites>{
@@ -20,5 +21,19 @@ export class HorairesDisponibilitesService {
 
   creerHoraireDisponibilite(utilisateurID : number, horaireDisponibilite : HoraireDisponibilites){
     return this.http.post<HoraireDisponibilites>(CONST.URL + "creerHoraireDisponibilites/" + utilisateurID.toString(),horaireDisponibilite).subscribe();
+  }
+
+  updateHoraire(horaireDisponibilites: HoraireDisponibilites)
+  {
+    return this.http.patch<HoraireDisponibilites>(CONST.URL + "enregistrerHoraire" , horaireDisponibilites).subscribe(data => {
+      alert(data);
+    });
+  }
+
+  supprimerHoraire(horaireDisponibilitesID: number)
+  {
+    return this.http.delete(CONST.URL + "supprimerHoraire/" + horaireDisponibilitesID).subscribe(data => {
+      alert(data)
+    });
   }
 }

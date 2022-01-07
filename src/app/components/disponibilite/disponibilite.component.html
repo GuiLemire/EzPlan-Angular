@@ -1,7 +1,7 @@
 <div>
-    <form>
+    <form class="container">
         <label for="disponibilite.journee">Journée:</label>
-        <select [(ngModel)]="disponibilite.journee" name="disponibilite.journee">
+        <select class="form-select" id="jourSemaine" [(ngModel)]="disponibilite.journee" name="disponibilite.journee">
             <option value="0">Dimanche</option>
             <option value="1">Lundi</option>
             <option value="2">Mardi</option>
@@ -9,16 +9,16 @@
             <option value="4">Jeudi</option>
             <option value="5">Vendredi</option>
             <option value="6">Samedi</option>
-        </select>
+        </select><br />
         <label for="disponibilite.heureDebut">Heure de début:</label>
-        <select [(ngModel)]="disponibilite.heureDebut" name="disponibilite.heureDebut" (change)="validerHeures()">
+        <select class="form-select" id="heureDebut" [(ngModel)]="disponibilite.heureDebut" name="disponibilite.heureDebut" (change)="validerHeures()">
             <option *ngFor="let heure of heuresDebut" value="{{heure.value}}">{{heure.name}}</option>
-        </select>
+        </select><br />
         <label for="disponibilite.heureFin">Heure de Fin:</label>
-        <select [(ngModel)]="disponibilite.heureFin" name="disponibilite.heureFin" (change)="validerHeures()"
-            [ngClass]="{redBorder : !valide}">
+        <select class="form-select" id="heureFin" [(ngModel)]="disponibilite.heureFin" name="disponibilite.heureFin" (change)="validerHeures()"
+            [ngClass]="{redBorder : !isValide}">
             <option *ngFor="let heure of heuresFin" value="{{heure.value}}">{{heure.name}}</option>
-        </select>
-        <button (click)="ajouterDisponibilite()">Accepter</button>
+        </select><br />
+        <button class="btn btn-primary" id="btnAccepter" (click)="ajouterDisponibilite()">Accepter</button>
     </form>
 </div><br />

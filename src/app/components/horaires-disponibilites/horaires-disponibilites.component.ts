@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
-import { Disponibilite } from 'src/app/models/disponibilite';
 import { HoraireDisponibilites } from 'src/app/models/horaireDisponibilites';
 import { HorairesDisponibilitesService } from 'src/app/services/horaires-disponibilites.service';
 import * as CONST from '../../constantes';
@@ -12,10 +11,9 @@ import * as CONST from '../../constantes';
 })
 export class HorairesDisponibilitesComponent implements OnInit
 {
-  horairesDisponibilites?: HoraireDisponibilites[];
-  disponibiliteSelectionnee?: Disponibilite;
-  disponibilites?: Disponibilite[];
+  horaireDisponibilitesID : number = -1;
   state: string = 'liste';
+  horairesDisponibilites?: HoraireDisponibilites[];    
 
   constructor(private horaireDisponibiliteService: HorairesDisponibilitesService) { }
 
@@ -30,16 +28,15 @@ export class HorairesDisponibilitesComponent implements OnInit
   }
   nouvelHoraire()
   {
-    this.state = 'nouvelHoraire';
+    this.state = 'horaire';
   }
   ajouterNouvelHoraire(horaireDisponibilite: HoraireDisponibilites)
   {
     if (!this.isNomHoraireDejaUtilise(horaireDisponibilite))
     {
-      this.horairesDisponibilites![this.horairesDisponibilites!.length] = horaireDisponibilite;
       this.horaireDisponibiliteService.creerHoraireDisponibilite(CONST.utilisateurID,horaireDisponibilite);
       alert("Le nouvel horaire a été ajouté avec succès.");
-      this.state = 'liste';
+      this.retourListe();
     }else{
       alert("Le nouvel horaire n'a pas pu être ajouté, le nom est déjà utilisé.")
     }
@@ -55,6 +52,16 @@ export class HorairesDisponibilitesComponent implements OnInit
     }
     return false;
   }
-
+  afficherHoraire(horaireDisponibilitesID? : number){
+    this.state = 'horaire'
+    this.horaireDisponibilitesID = horaireDisponibilitesID!;
+  }
+  retourListe(){
+    this.state = 'liste';
+    setTimeout(() => {
+      this.fetchHorairesDisponibilite();
+      this.horaireDisponibilitesID = -1;
+    },1000);   
+  }
 }
 

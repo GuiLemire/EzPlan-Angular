@@ -28,4 +28,11 @@ export class SemainesPlanifieesService {
     return this.http.get<SemainePlanifiee>(CONST.URL + "getSemainePlanifiee/" + semainePlanifieeID.toString());
   }
 
+  supprimerSemainePlanifiee(semainePlanifiee: SemainePlanifiee)
+  {
+    return this.http.delete(CONST.URL + "supprimerSemainePlanifieeByID/" + semainePlanifiee.semainePlanifieeID?.toString()).subscribe(data => {
+      alert(data);
+    });
+  }
+
 }

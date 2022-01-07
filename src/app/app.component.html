@@ -1,17 +1,17 @@
 <header id="header" class="d-flex align-items-center justify-content-center">
-    <button id="backBtn" type="button" class="btn btn-sm btn-dark position-absolute bottom-5 start-0" *ngIf="title != 'Mon planning'" (click)="changerPage('Mon planning')">Back</button>
+    <button id="backBtn" type="button" class="btn btn-sm btn-dark position-absolute bottom-5 start-0" *ngIf="state != 'listeSemaines'" (click)="changerPage('Mon planning')">Back</button>
     <h1>{{title}}</h1>
 </header>
 
 <div>
     <app-taches *ngIf="title == 'Taches'"></app-taches>
     <app-horaires-disponibilites *ngIf="title == 'Disponibilites'"></app-horaires-disponibilites>
-    <app-semaines-planifiees *ngIf="title == 'Mon planning'"></app-semaines-planifiees>
+    <app-semaines-planifiees [state]="state" (backBtn)="stateSemaines($event)" *ngIf="title == 'Mon planning'"></app-semaines-planifiees>
 </div>
 
-<footer id="footer" class="fixed-bottom hstack gap-3" *ngIf="title == 'Mon planning'">
-    <button type="button" class="btn btn-primary m-auto" (click)="changerPage('Taches')">Tâche</button>
-    <button type="button" class="btn btn-primary m-auto" (click)="changerPage('Disponibilites')">Disponibilités</button>
+<footer id="footer" class="fixed-bottom hstack gap-3 mt-2 p-2" *ngIf="title == 'Mon planning'">
+    <button id="taches" type="button" class="btn btn-primary m-auto" (click)="changerPage('Taches')">Tâche</button>
+    <button id="disponibilites" type="button" class="btn btn-primary m-auto" (click)="changerPage('Disponibilites')">Disponibilités</button>
 </footer>
 
 <router-outlet></router-outlet>

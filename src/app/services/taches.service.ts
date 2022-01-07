@@ -9,7 +9,12 @@ import * as CONST from '../constantes';
 })
 export class TachesService {
 
-
+  supprimerTache(tacheID: number)
+  {
+    return this.http.delete<Tache>(CONST.URL + "supprimerTache/" + tacheID.toString()).subscribe(data => {
+      alert(data);
+    });
+  }
   async updateTache(tache: Tache)
   {
     return this.http.patch<Tache>(CONST.URL + "updateTache" , tache).subscribe(data => {

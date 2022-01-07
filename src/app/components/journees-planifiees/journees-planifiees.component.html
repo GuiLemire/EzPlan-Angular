@@ -1,23 +1,27 @@
 <div *ngIf="state == 'listeJournees'">
     <p>Semaine du {{semainePlanifiee?.dateDebut | date : 'mediumDate' : '+0000': 'fr'}}</p>
     <div *ngFor="let journeePlanifiee of semainePlanifiee?.journeesPlanifiees">
-        <ul>
-            <li [ngClass]="{'hover' : journeePlanifiee!.partiesDeTachesPlanifiees!.length > 0}"
+        <ul class="list-group">
+            <li [ngClass]="{'list-group-item-action' : journeePlanifiee!.partiesDeTachesPlanifiees!.length > 0,
+                                                                                           'list-group-item list-tache-item' : true}"
                 (click)="journeePlanifiee!.partiesDeTachesPlanifiees!.length > 0 && afficherJourneePlanifiee(journeePlanifiee!.journeePlanifieeID)">
-                {{journeePlanifiee.date | date:'cccc':'+0000':'fr' | titlecase}}</li>
+                {{journeePlanifiee.date | date:'cccc':'+0000':'fr' | titlecase}}
             <ul>
                 <li *ngFor="let partiesDeTachesPlanifiees of journeePlanifiee.partiesDeTachesPlanifiees">
                     {{partiesDeTachesPlanifiees.tachePlanifiee!.tache!.nom}}
                 </li>
             </ul>
+            </li>
         </ul>
     </div>
     <p>Tâches planifiées</p>
     <div>
-        <ul>
-            <li *ngFor="let tachePlanifiee of semainePlanifiee?.tachesPlanifiees">{{tachePlanifiee.tache!.nom}} -- Date
-                d'échéance: {{tachePlanifiee.dateEcheance | date : 'mediumDate' : '+0000': 'fr'}}</li>
+        <ul class="list-group">
+            <li class="list-group-item" *ngFor="let tachePlanifiee of semainePlanifiee?.tachesPlanifiees">{{tachePlanifiee.tache!.nom}}<br />Date
+                d'échéance: {{tachePlanifiee.dateEcheance | date : 'mediumDate' : '+0000': 'fr'}}<br />
+            <button class="btn btn-danger" (click)="retirerTache(tachePlanifiee)">Retirer</button>  </li>
         </ul>
     </div>
+    <button class="btn btn-danger" (click)="supprimerSemaine()">Supprimer</button>
 </div>
 <app-journee-planifiee [journeePlanifiee]='journeePlanifiee!' *ngIf="state == 'journee'"></app-journee-planifiee>

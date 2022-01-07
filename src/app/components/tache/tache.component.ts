@@ -12,16 +12,17 @@ export class TacheComponent implements OnInit, OnChanges
 {
   tache: Tache = { nom: "Ma tache", dureeApproximative: 15, dureeMaxConsecutive: 15, niveauDeStress: 0 }
   @Input() tacheID : number = -1;
-  valide: boolean = true;
+  isValide: boolean = true;
   @Output() ajouterNouvelleTache = new EventEmitter<Tache>();
   @Output() retourListe = new EventEmitter<void>();
   constructor(private tachesService : TachesService) { }
-
   
   ngOnChanges(changes: SimpleChanges): void
   {
     if(this.tacheID == -1){
       this.tache = { nom: "Ma tache", dureeApproximative: 15, dureeMaxConsecutive: 15, niveauDeStress: 0 };
+    }else{
+      this.fetchTache();
     }
   }
 
@@ -38,8 +39,8 @@ export class TacheComponent implements OnInit, OnChanges
   }
   validerDureeConsecutiveMax()
   {
-    this.valide = this.tache.dureeMaxConsecutive! <= this.tache.dureeApproximative!
-    if (!this.valide)
+    this.isValide = this.tache.dureeMaxConsecutive! <= this.tache.dureeApproximative!;
+    if (!this.isValide)
     {
       this.messageErreur();
     }
@@ -50,7 +51,7 @@ export class TacheComponent implements OnInit, OnChanges
   }
   ajouterTache()
   {
-    if (this.valide)
+    if (this.isValide)
     {
       this.ajouterNouvelleTache.emit(this.tache);
       this.tache = { nom: "Ma tache", dureeApproximative: 15, dureeMaxConsecutive: 15, niveauDeStress: 0 };
@@ -63,6 +64,12 @@ export class TacheComponent implements OnInit, OnChanges
   enregistrerTache(){
     this.tachesService.updateTache(this.tache);
     this.retourListe.emit();
+  }
+  supprimerTache(){
+    if(confirm("Voulez-vous vraiment supprimer la tache " + this.tache.nom + " ?")){
+      this.tachesService.supprimerTache(this.tacheID);
+      this.retourListe.emit();
+    }
   }
 
 }

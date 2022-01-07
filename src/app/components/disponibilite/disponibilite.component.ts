@@ -1,5 +1,7 @@
-import { Component, OnInit, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
+import { lastValueFrom } from 'rxjs';
 import { Disponibilite } from 'src/app/models/disponibilite';
+import { DisponibilitesService } from 'src/app/services/disponibilites.service';
 
 @Component({
   selector: 'app-disponibilite',
@@ -11,15 +13,25 @@ export class DisponibiliteComponent implements OnInit
   disponibilite: Disponibilite = { journee: 1, heureDebut: 0, heureFin: 23.75 }
   heuresDebut: { name: string, value: number }[] = [];
   heuresFin: { name: string, value: number }[] = [];
-  valide: boolean = true;
+  isValide: boolean = true;
+  @Input() disponibiliteID : number = -1;
   @Output() ajouterNouvelleDisponibilite = new EventEmitter<Disponibilite>();
 
-  constructor() { }
+
+  constructor(private disponibilitesService : DisponibilitesService) { }
 
   ngOnInit(): void
   {
     this.initialiserHeuresDebut();
     this.initisaliserHeuresFin();
+    if (this.disponibiliteID > -1){
+      this.fetchDisponibilite();
+    }
+  }
+  async fetchDisponibilite()
+  {
+    const disponibilite$ = this.disponibilitesService.getDisponibiliteByID(this.disponibiliteID);
+    this.disponibilite = await lastValueFrom(disponibilite$);
   }
   initisaliserHeuresFin()
   {
@@ -48,11 +60,11 @@ export class DisponibiliteComponent implements OnInit
   }
   validerHeures() : boolean
   {
-    this.valide = (Number(this.disponibilite.heureDebut!) < Number(this.disponibilite.heureFin!))
-    if(!this.valide){
+    this.isValide = (Number(this.disponibilite.heureDebut!) < Number(this.disponibilite.heureFin!))
+    if(!this.isValide){
       this.afficherAlertErreur();
     }
-    return this.valide;
+    return this.isValide;
   }
   afficherAlertErreur()
   {

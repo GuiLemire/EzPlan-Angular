@@ -1,13 +1,22 @@
-<app-semaine-planifiee [semainesPlanifiees]="semainesPlanifiees" *ngIf="state == 'nouvelleSemaine'"></app-semaine-planifiee>
+<app-semaine-planifiee (retourListe)="retourListe()" [semainesPlanifiees]="semainesPlanifiees"
+    *ngIf="state == 'nouvelleSemaine'"></app-semaine-planifiee>
 
 <div *ngIf="state == 'listeSemaines'">
     <p>Liste de semaines planifiées</p>
-    <ul>
-            <li class="hover" (click)="afficherJourneesPlanifiees(semainePlanifiee.semainePlanifieeID!)" *ngFor="let semainePlanifiee of semainesPlanifiees">{{semainePlanifiee.dateDebut | date : 'mediumDate' : '+0000': 'fr'}}</li>
-
+    <ul class="list-group">
+        <li class="list-group-item list-group-item-action list-tache-item"
+            (click)="afficherJourneesPlanifiees(semainePlanifiee.semainePlanifieeID!)"
+            *ngFor="let semainePlanifiee of semainesPlanifiees">{{semainePlanifiee.dateDebut | date : 'mediumDate' :
+            '+0000': 'fr'}}</li>
     </ul>
 </div>
 
-<app-journees-planifiees [semainePlanifieeID]='semainePlanifieeID' *ngIf="state == 'journees'"></app-journees-planifiees>
+<app-journees-planifiees (retourListeSemaines) = "retourListe()" [semainePlanifieeID]='semainePlanifieeID' *ngIf="state == 'journees'">
+</app-journees-planifiees>
 
-<button *ngIf="state == 'listeSemaines'" (click)="planifierSemaine()">Planifier une nouvelle semaine</button>
+<div class="container">
+    <div class="row">
+        <button class="btn btn-primary col-10 col-sm-6 col-lg-4 m-auto" id="planifierSemaine" *ngIf="state == 'listeSemaines'"
+            (click)="planifierSemaine()">Planifier une nouvelle semaine</button>
+    </div>
+</div>
